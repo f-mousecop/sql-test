@@ -25,6 +25,16 @@ public class Main {
             IO.println("\nInvoices worth at least 100:");
             dao.allWithAtLeast(100).forEach(IO::println);
 
+            dao.remove(new Invoice("Charles", 100));
+            dao.remove(new Invoice("John", 250));
+            dao.remove(new Invoice("Sarah", 75));
+
+            IO.println("\nUpdated invoices:");
+            dao.all().forEach(IO::println);
+
+            IO.println("\nInvoices worth at least 100:");
+            dao.allWithAtLeast(100).forEach(IO::println);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

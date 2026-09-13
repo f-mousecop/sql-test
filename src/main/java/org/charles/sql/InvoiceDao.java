@@ -3,6 +3,7 @@ package org.charles.sql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,24 @@ public class InvoiceDao {
 
             connection.commit();
         } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void remove(Invoice inv) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("delete from invoice where name = ? and value = ?");
+
+            ps.setString(1, inv.customer);
+            ps.setInt(2, inv.value);
+
+            int affectedRows = ps.executeUpdate();
+
+            connection.commit();
+
+            IO.println("\nSuccessfully removed: " + affectedRows + "row(s):");
+            IO.println("Name: " + inv.customer + ", Value: " + inv.value);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
