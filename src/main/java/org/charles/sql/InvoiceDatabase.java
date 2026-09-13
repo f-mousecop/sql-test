@@ -1,0 +1,40 @@
+package org.charles.sql;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class InvoiceDatabase {
+
+    private static final String URL =
+            "jdbc:hsqldb:file:./data/invoicedb;shutdown=true";
+
+    public static Connection connect() {
+        try {
+            Connection connection =
+                    DriverManager.getConnection(URL, "SA", "");
+
+            connection.setAutoCommit(false);
+
+            return connection;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void createTable(Connection connection) {
+        String sql = """
+                CREATE TABLE IF NOT EXISTS invoice (
+                    name VARCHAR(255) NOT NULL,
+                    value INTEGER NOT NULL
+                )
+                """;
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+            connection.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
